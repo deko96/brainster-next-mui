@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum SurveyStatus {
+  DRAFT
+  ONGOING
+  FINISHED
+}
+
+model Survey {
+  id                  String       @id @default(uuid())
+  surveyName          String
+  introductionMessage String?
+  surveyManager       String
+  status              SurveyStatus @default(DRAFT)
+  questions           Question[]
+}
+
+model Question {
+  id              String           @id @default(uuid())
+  text            String
+  required        Boolean          @default(true)
+  position        Int
+  surveyId        String
+  survey          Survey           @relation(fields: [surveyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  questionAnswers QuestionAnswer[]
+
+  @@unique([surveyId, position])
+}
+
+model QuestionAnswer {
+  id         String   @id @default(uuid())
+  answer     String
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  results    Result[]
+}
+
+model Result {
+  id               String         @id @default(uuid())
+  questionAnswerId String
+  questionAnswer   QuestionAnswer @relation(fields: [questionAnswerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  sentimentScore   String
+  keywords         String[]
+  summary          String
+}
