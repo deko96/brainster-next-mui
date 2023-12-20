@@ -14,16 +14,21 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@prisma/client": "^5.7.1",
+    "@vercel/postgres": "^0.5.1",
     "next": "latest",
+    "nodemailer": "^6.9.7",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",
+    "@types/nodemailer": "^6.4.14",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "prisma": "^5.7.1",
     "typescript": "latest"
   }
 }
